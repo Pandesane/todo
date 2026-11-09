@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">todo_app</string>
+    <string name="title_activity_main">todo_app</string>
+    <string name="package_name">online.pandesteve.todoapp</string>
+    <string name="custom_url_scheme">online.pandesteve.todoapp</string>
+</resources>

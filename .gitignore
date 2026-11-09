@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # node files
 dist
 node_modules
@@ -68,3 +69,28 @@ captures
 
 # External native build folder generated in Android Studio 2.2 and later
 .externalNativeBuild
+=======
+node_modules
+
+# Output
+.output
+.vercel
+.netlify
+.wrangler
+/.svelte-kit
+/build
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.*
+!.env.example
+!.env.test
+
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+>>>>>>> 95b797e (Init of Todo Capacitor and pouchdb app)

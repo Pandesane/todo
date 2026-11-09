@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "compilerOptions": {
     "allowUnreachableCode": false,
     "declaration": true,
@@ -17,4 +18,12 @@
     "target": "es2017"
   },
   "files": ["src/index.ts"]
+=======
+	"extends": "$app/tsconfig",
+	"compilerOptions": {
+		"strict": true,
+		"types": ["$app/types", "node"]
+	},
+	"include": ["src", "vite.config.ts", "prettier.config.js", "eslint.config.js"]
+>>>>>>> 95b797e (Init of Todo Capacitor and pouchdb app)
 }
