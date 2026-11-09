@@ -1,9 +1,15 @@
 import PouchDB from "pouchdb-browser"
 import { COUCHDB_BASE_URL } from "../APIConstants"
 import { browser } from "$app/environment"
+import type { PouchAttachment } from "$lib/utilities/pouchdb/PouchAttachment.svelte"
 
 const DB_NAME = "todos"
 
+export interface IPouchDBAttachment {
+  content_type: string
+  digest: string
+  data: string
+}
 export interface IPouchTodo {
   _id: string
   _rev: string
@@ -14,7 +20,9 @@ export interface IPouchTodo {
   title: string
   description: string
   collection: string
-
+  _attachments?: any
+  start_time: string
+  end_time: string
 
 }
 
@@ -36,12 +44,13 @@ class PouchTodoApi {
       }).on('change', (change) => {
         // handle change
         // if (change.doc?.collection == "todos") {
-        this.onChangeEventHandlers.forEach((handler) => {
+        this.onChangeEventHandlers.forEach(async (handler) => {
           if (change.deleted) {
             handler(change.deleted, change.id, undefined)
 
           } else {
-            handler(false, change.id, change.doc!)
+            let doc = await this.get(change.id)
+            handler(false, change.id, doc!)
           }
         })
         // }
@@ -64,7 +73,7 @@ class PouchTodoApi {
   }
   async list() {
     let doc = await
-      this.db?.allDocs({ include_docs: true });
+      this.db?.allDocs({ include_docs: true, attachments: true });
     let data: IPouchTodo[] = [];
     for (let i = 0; i < doc!.rows.length; i++) {
       const element = doc?.rows[i];
@@ -77,7 +86,7 @@ class PouchTodoApi {
   }
 
   async get(_docID: string) {
-    return await this.db?.get(_docID)
+    return await this.db?.get(_docID, { attachments: true })
   }
 
   // async create(event: any, newChatMessageAttachments: ChatMessageAttachments) {
@@ -107,6 +116,7 @@ class PouchTodoApi {
 
   async create(
     event: any,
+    attachments: PouchAttachment[]
   ) {
     const data = this.getFormData(event);
     const now = new Date().toISOString();
@@ -124,30 +134,30 @@ class PouchTodoApi {
       ...timeStamps,
     };
 
-    // if (attachments.length > 0) {
-    //   document._attachments = {};
+    if (attachments.length > 0) {
+      document._attachments = {};
 
-    //   for (const attachment of attachments) {
-    //     let blob
+      for (const attachment of attachments) {
+        let blob
 
-    //     if (!attachment.isBlob) {
-    //       blob = new Blob(
-    //         [await attachment.file!.arrayBuffer()],
-    //         { type: attachment.mime_type }
-    //       );
-    //     } else {
-    //       blob = attachment.blob
-    //     }
+        if (!attachment.isBlob) {
+          blob = new Blob(
+            [await attachment.file!.arrayBuffer()],
+            { type: attachment.mime_type }
+          );
+        } else {
+          blob = attachment.blob
+        }
 
-    //     console.log("Added the blob here", blob)
+        console.log("Added the blob here", blob)
 
 
-    //     document._attachments[attachment.uuid] = {
-    //       content_type: attachment.mime_type,
-    //       data: blob,
-    //     };
-    //   }
-    // }
+        document._attachments[attachment.uuid] = {
+          content_type: attachment.mime_type,
+          data: blob,
+        };
+      }
+    }
 
 
     // One database write for the document and its attachments
@@ -160,7 +170,7 @@ class PouchTodoApi {
 
 
   // Include the document _id and the _rev
-  update(event: any, todo: IPouchTodo) {
+  async update(event: any, todo: IPouchTodo, attachments: PouchAttachment[]) {
     let data = this.getFormData(event)
 
     const now = new Date().toISOString();
@@ -168,11 +178,47 @@ class PouchTodoApi {
     console.log(data,)
     console.log(todo)
     console.log(document)
+
+
+
+    if (attachments.length > 0) {
+      document._attachments = {};
+      if (todo._attachments) {
+        document._attachments = todo._attachments
+      }
+
+      for (const attachment of attachments) {
+        let blob
+
+        if (!attachment.isBlob) {
+          blob = new Blob(
+            [await attachment.file!.arrayBuffer()],
+            { type: attachment.mime_type }
+          );
+        } else {
+          blob = attachment.blob
+        }
+
+        console.log("Added the blob here", blob)
+
+
+        document._attachments[attachment.uuid] = {
+          content_type: attachment.mime_type,
+          data: blob,
+        };
+      }
+    }
+
+
     this.db?.put(document)
   }
 
   delete(_docID: string, _rev: string) {
     this.db?.remove(_docID, _rev)
+  }
+
+  removeAttachment(docID: string, attachmentKey: string, rev: string) {
+    this.db?.removeAttachment(docID, attachmentKey, rev)
   }
 
   private getFormData(event: any) {

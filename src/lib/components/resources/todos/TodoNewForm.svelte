@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { PouchTodoAPISingleton } from '$lib/api/api_pouch_db/PouchTodo.js';
-	import { browser } from '$app/environment';
 	import TodoPouchDBStateSingleton from '$lib/state/pouchdb/TodoState.svelte';
+	import TodoAudioRecorder from '$lib/components/TodoAudioRecorder.svelte';
+	import { PouchDBAttachments } from '$lib/utilities/pouchdb/PouchAttachment.svelte';
+	import TodoAudioAttachmentPreview from '$lib/components/TodoAudioAttachmentPreview.svelte';
 
 	interface IProps {
 		closeModal: () => void;
@@ -10,23 +11,24 @@
 	let { closeModal }: IProps = $props();
 
 	// Defaults
-	let formStatus = $state('Enabled after file is uploaded to server');
 	let form: HTMLFormElement;
-	let submitBtn: HTMLButtonElement;
 
 	let PouchTodoAPI = TodoPouchDBStateSingleton.getSupportCenterLiveDataPouchDb().PouchTodoAPI;
+	let todoAttachments = new PouchDBAttachments();
 
 	export function resetForm() {
 		form.reset();
+		todoAttachments.reset();
 	}
 </script>
 
 <form
 	bind:this={form}
-	onsubmit={(event) => {
-		PouchTodoAPI.create(event);
+	onsubmit={async (event) => {
+		await PouchTodoAPI.create(event, todoAttachments.attachments);
 		closeModal();
 		form.reset();
+		todoAttachments.reset();
 	}}
 	class="mx-4 mt-8 flex flex-col gap-y-4"
 	enctype="multipart/form-data"
@@ -34,7 +36,7 @@
 	<p class="text-center">Create New todo</p>
 
 	<div class="flex flex-col gap-1.5">
-		<label for="title" class="text-xs font-medium text-slate-600"> title </label>
+		<label for="title" class="text-xs font-medium text-slate-600"> Title </label>
 
 		<input
 			id="title"
@@ -47,7 +49,33 @@
 	</div>
 
 	<div class="flex flex-col gap-1.5">
-		<label for="description" class="text-xs font-medium text-slate-600">description</label>
+		<label for="start_time" class="text-xs font-medium text-slate-600"> Start Time </label>
+
+		<input
+			id="start_time"
+			type="time"
+			name="start_time"
+			class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm
+            transition outline-none
+            focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+		/>
+	</div>
+
+  <div class="flex flex-col gap-1.5">
+		<label for="end_time" class="text-xs font-medium text-slate-600"> Start Time </label>
+
+		<input
+			id="end_time"
+			type="time"
+			name="end_time"
+			class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm
+            transition outline-none
+            focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+		/>
+	</div>
+
+	<div class="flex flex-col gap-1.5">
+		<label for="description" class="text-xs font-medium text-slate-600">Description</label>
 
 		<textarea
 			id="description"
@@ -60,6 +88,25 @@
 	</div>
 
 	<input name="collection" type="hidden" value="todos" />
+
+	<!--Audio Attachments -->
+	<p>Audio Attachments</p>
+	<TodoAudioRecorder
+		uploadAudioRecording={(blob) => {
+			console.log(blob);
+			todoAttachments.addBlobAttachment(blob);
+		}}
+	/>
+	<div class="flex flex-col gap-y-2">
+		{#each todoAttachments.attachments as audioAttachment}
+			<TodoAudioAttachmentPreview
+				{audioAttachment}
+				removeAttachment={(uuid) => {
+					todoAttachments.removeAttachment(uuid);
+				}}
+			/>
+		{/each}
+	</div>
 
 	<button
 		type="submit"

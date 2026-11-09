@@ -28,12 +28,14 @@
       "dependencies": {
         "@capacitor/android": "^7.4.3",
         "@capacitor/core": "^7.4.3",
+        "@capawesome/capacitor-permissions": "^0.1.2",
         "@iconify-json/hugeicons": "^1.2.34",
         "@iconify-json/ic": "^1.2.4",
         "@iconify-json/svg-spinners": "^1.2.4",
         "@iconify/json": "^2.2.384",
         "@sveltejs/adapter-node": "^5.5.2",
         "@types/pouchdb": "^6.4.2",
+        "blob-utils": "^1.0.3",
         "daisyui": "^5.1.24",
         "date-fns": "^4.1.0",
         "events": "^3.3.0",
@@ -100,6 +102,8 @@
     "@capacitor/cli": ["@capacitor/cli@7.6.10", "", { "dependencies": { "@ionic/cli-framework-output": "^2.2.8", "@ionic/utils-subprocess": "^3.0.1", "@ionic/utils-terminal": "^2.3.5", "commander": "^12.1.0", "debug": "^4.4.0", "env-paths": "^2.2.0", "fs-extra": "^11.2.0", "kleur": "^4.1.5", "native-run": "^2.0.3", "open": "^8.4.0", "plist": "^3.1.0", "prompts": "^2.4.2", "rimraf": "^6.0.1", "semver": "^7.6.3", "tar": "^7.5.3", "tslib": "^2.8.1", "xml2js": "^0.6.2" }, "bin": { "cap": "bin/capacitor", "capacitor": "bin/capacitor" } }, "sha512-8S0h44+339hCJyDw0EWqKz4ivR08tzSY35WzSs49pQ4gNOrGiyKpBUaZc08zlJgvN8yfzMY1pi8QfKDsSn1eHg=="],
 
     "@capacitor/core": ["@capacitor/core@7.6.10", "", { "dependencies": { "tslib": "^2.1.0" } }, "sha512-foYHd//t6E3RTELVG8wdkp5jVnmLcHKUurAa9BA8EUSNd2eY0SijCHpfO0bFwYBP5DrCeXwgSFYi3NJw413gtQ=="],
+
+    "@capawesome/capacitor-permissions": ["@capawesome/capacitor-permissions@0.1.2", "", { "peerDependencies": { "@capacitor/core": ">=8.0.0" } }, "sha512-zi55o4ePi+9K+pD3OKiw0KNBMD0DPcoeIgsYaH1M+ajDafkkP6eiIfoLWNhH+p8hnZAhGn3YbJbQs1lDAG6oGQ=="],
 
     "@cyberalien/svg-utils": ["@cyberalien/svg-utils@1.2.21", "", { "dependencies": { "@iconify/types": "^2.0.0" } }, "sha512-exLnXg7+DfTRHD6Qm0SbWLXAICO0L4SdYevvY3irn3bU6zJ+WvIS6ogomE3T7EXE3krJjCpUKmkiRq4Mp/HoTw=="],
 >>>>>>> 95b797e (Init of Todo Capacitor and pouchdb app)
@@ -582,6 +586,8 @@
     "big-integer": ["big-integer@1.6.52", "", {}, "sha512-QxD8cf2eVqJOOz63z6JIN9BzvVs/dlySa5HGSBH5xtR8dPteIRQnBxxKqkNTiT6jbDTF6jAfrd4oMcND9RGbQg=="],
 
     "binary-extensions": ["binary-extensions@2.3.0", "", {}, "sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw=="],
+
+    "blob-utils": ["blob-utils@1.0.3", "", {}, "sha512-9GFpf+WhTvX7gGUJo/Ld72NG1RH/XkdS3CyAi0h4iMigcbldlDVXuRdWubl+dU6FApBBAku5eReovW6PDdcK7w=="],
 
     "boolbase": ["boolbase@1.0.0", "", {}, "sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww=="],
 

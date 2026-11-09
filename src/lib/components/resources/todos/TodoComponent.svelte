@@ -1,12 +1,13 @@
 <script lang="ts">
-	import type { IPouchTodo } from '$lib/api/api_pouch_db/PouchTodo';
+	import type { IPouchDBAttachment, IPouchTodo } from '$lib/api/api_pouch_db/PouchTodo';
+	import TodoAudioAttachmentPlayer from '$lib/components/TodoAudioAttachmentPlayer.svelte';
 	import TodoPouchDBStateSingleton from '$lib/state/pouchdb/TodoState.svelte';
 	import TodoEditForm from './TodoEditForm.svelte';
 
 	interface IProps {
 		todo: IPouchTodo;
 	}
-	let { todo,  }: IProps = $props();
+	let { todo }: IProps = $props();
 
 	let dialogElementEdit: HTMLDialogElement;
 	let todoEditForm: TodoEditForm;
@@ -16,10 +17,51 @@
 <div class="relative my-8 flex flex-col gap-4 pl-4">
 	<div class="flex flex-col gap-4 md:flex-row md:gap-6">
 		<div class="font-semibold text-sm">{todo.title}</div>
-
 		<div class="">{todo.description}</div>
 
+		{#if todo.start_time}
+			<div class="font-semibold text-sm">Start: {todo.start_time}</div>
+		{/if}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+		{#if todo.end_time}
+			<div class="font-semibold text-sm">End: {todo.end_time}</div>
+		{/if}
+
+		{#if todo._attachments}
+			{#each Object.values(todo._attachments) as attachment}
+				<TodoAudioAttachmentPlayer
+					audioAttachment={attachment as unknown as IPouchDBAttachment}
+					removeAttachment={() => {
+						PouchTodoAPI.removeAttachment(todo._id, Object.keys(todo._attachments)[0], todo._rev);
+					}}
+				/>
+			{/each}
+		{/if}
 		<!-- ACTIONS -->
 		<div class="mt-auto flex items-center gap-4 pt-2">
 			<button
@@ -52,7 +94,6 @@
 				dialogElementEdit.close();
 			}}
 			{todo}
-
 		/>
 
 		<div class="modal-action">
