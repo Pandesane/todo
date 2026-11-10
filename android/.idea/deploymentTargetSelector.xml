@@ -4,7 +4,7 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2026-11-09T12:04:53.946105077Z">
+        <DropdownSelection timestamp="2026-11-10T08:13:12.479709563Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="LocalEmulator" identifier="path=/home/pande/.android/avd/Medium_Phone.avd" />

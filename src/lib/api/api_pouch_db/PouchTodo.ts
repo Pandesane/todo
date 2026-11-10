@@ -2,6 +2,10 @@ import PouchDB from "pouchdb-browser"
 import { COUCHDB_BASE_URL } from "../APIConstants"
 import { browser } from "$app/environment"
 import type { PouchAttachment } from "$lib/utilities/pouchdb/PouchAttachment.svelte"
+// import { LocalNotificationPlugin } from "local-notifications"
+const module = await import(
+  '@local-notifications'
+);
 
 const DB_NAME = "todos"
 
@@ -50,6 +54,8 @@ class PouchTodoApi {
 
           } else {
             let doc = await this.get(change.id)
+            await module.LocalNotificationPlugin.notify({ title: doc?.title!, body: doc?.description! });
+
             handler(false, change.id, doc!)
           }
         })

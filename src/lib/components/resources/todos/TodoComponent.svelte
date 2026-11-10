@@ -22,32 +22,6 @@
 		{#if todo.start_time}
 			<div class="font-semibold text-sm">Start: {todo.start_time}</div>
 		{/if}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		
-
 		{#if todo.end_time}
 			<div class="font-semibold text-sm">End: {todo.end_time}</div>
 		{/if}

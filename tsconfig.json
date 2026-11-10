@@ -39,6 +39,11 @@
     "sourceMap": true,
     "strict": true,
     "moduleResolution": "bundler",
+    "types": [
+  "vite/client",
+  "vite-plugin-pwa/info",
+  "vite-plugin-pwa/client"
+],
     "allowSyntheticDefaultImports": true
   }
 

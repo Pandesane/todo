@@ -22,7 +22,13 @@ const config = {
     // adapter: adapter({
     //   fallback: "index.html", // may differ from host to host
     // }),
-    adapter: adapter({}),
+    serviceWorker: {
+      register: true,
+
+    },
+    adapter: adapter({
+      fallback: "index.html", // may differ from host to host
+    }),
     output: {
       bundleStrategy: "single",
     },

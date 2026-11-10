@@ -4,3 +4,6 @@ project(':capacitor-android').projectDir = new File('../node_modules/@capacitor/
 
 include ':capawesome-capacitor-permissions'
 project(':capawesome-capacitor-permissions').projectDir = new File('../node_modules/@capawesome/capacitor-permissions/android')
+
+include ':local-notifications'
+project(':local-notifications').projectDir = new File('../../capacitor_plugins/local_notifications/android')
