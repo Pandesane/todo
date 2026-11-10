@@ -2,7 +2,7 @@
 	/// <reference types="vite-plugin-pwa/svelte" />
 	/// <reference types="vite-plugin-pwa/info" />
 	import './layout.css';
-	import favicon from '$lib/assets/favicon.svg';
+	import favicon from '#lib/assets/favicon.svg';
 	import type { LayoutProps } from './$types';
 	import { onMount } from 'svelte';
 	import { pwaInfo } from 'virtual:pwa-info';

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import type { IPouchDBAttachment, IPouchTodo } from '$lib/api/api_pouch_db/PouchTodo';
-	import TodoAudioAttachmentPlayer from '$lib/components/TodoAudioAttachmentPlayer.svelte';
-	import TodoPouchDBStateSingleton from '$lib/state/pouchdb/TodoState.svelte';
+	import type { IPouchDBAttachment, IPouchTodo } from '#lib/api/api_pouch_db/PouchTodo';
+	import TodoAudioAttachmentPlayer from '#lib/components/TodoAudioAttachmentPlayer.svelte';
+	import TodoPouchDBStateSingleton from '#lib/state/pouchdb/TodoState.svelte';
 	import TodoEditForm from './TodoEditForm.svelte';
 
 	interface IProps {

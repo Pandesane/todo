@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
-	import TodoAudioRecorderMediaCapture from '$lib/state/TodoAudioRecorderMediaCapture.svelte';
-	import { Time } from '$lib/utilities/Time';
+	import { browser } from '$app/env';
+	import TodoAudioRecorderMediaCapture from '#lib/state/TodoAudioRecorderMediaCapture.svelte';
+	import { Time } from '#lib/utilities/Time';
 	import { onMount } from 'svelte';
 	import RoomSelect from './RoomSelect.svelte';
 

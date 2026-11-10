@@ -3,23 +3,38 @@ import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vite';
 import commonjs from 'vite-plugin-commonjs';
 import { withPwa } from '@vite-pwa/sveltekit';
-import path from 'node:path';
-
+import adapter from '@sveltejs/adapter-static';
 export default defineConfig({
 	//  resolve: {
-  //   alias: {
-  //     '@local-notifications': path.resolve(
-  //       __dirname,
-  //       '../capacitor_plugins/local_notifications/dist/esm'
-  //     )
-  //   }
-  // },
+	//   alias: {
+	//     '@local-notifications': path.resolve(
+	//       __dirname,
+	//       '../capacitor_plugins/local_notifications/dist/esm'
+	//     )
+	//   }
+	// },
 	plugins: [
 		commonjs(),
 		tailwindcss(),
 
 		withPwa(
-			undefined,
+			{
+				compilerOptions: {
+					// Force runes mode for the project, except for libraries. Can be removed in svelte 6.
+					runes: ({ filename }) =>
+						filename.split(/[/\\]/).includes('node_modules') ? undefined : true,
+					experimental: { async: true }
+				},
+
+				adapter: adapter({
+
+				}),
+				experimental: { remoteFunctions: true },
+				output: {
+					bundleStrategy: "single",
+
+				},
+			},
 			{
 				// strategy: 'buildSW',
 
@@ -56,7 +71,7 @@ export default defineConfig({
 				},
 
 
-				workbox: {
+				generateSW: {
 					// Files to download and cache during service-worker installation.
 					// These paths are relative to .svelte-kit/output.
 					globPatterns: [
@@ -167,7 +182,7 @@ export default defineConfig({
 						// Network first, then use cached data when offline.
 						{
 							urlPattern: ({ url, request }) =>
-								request.method === 'GET' ,
+								request.method === 'GET',
 
 							handler: 'CacheFirst',
 

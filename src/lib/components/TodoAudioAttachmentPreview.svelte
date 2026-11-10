@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { PouchAttachment } from '$lib/utilities/pouchdb/PouchAttachment.svelte';
+	import type { PouchAttachment } from '#lib/utilities/pouchdb/PouchAttachment.svelte';
 	import { onMount } from 'svelte';
 
 	interface IProps {

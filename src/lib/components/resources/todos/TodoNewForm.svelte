@@ -1,8 +1,8 @@
 <script lang="ts">
-	import TodoPouchDBStateSingleton from '$lib/state/pouchdb/TodoState.svelte';
-	import TodoAudioRecorder from '$lib/components/TodoAudioRecorder.svelte';
-	import { PouchDBAttachments } from '$lib/utilities/pouchdb/PouchAttachment.svelte';
-	import TodoAudioAttachmentPreview from '$lib/components/TodoAudioAttachmentPreview.svelte';
+	import TodoAudioRecorder from '#lib/components/TodoAudioRecorder.svelte';
+	import TodoAudioAttachmentPreview from '#lib/components/TodoAudioAttachmentPreview.svelte';
+	import { PouchDBAttachments } from '#lib/utilities/pouchdb/PouchAttachment.svelte.ts';
+	import TodoPouchDBStateSingleton from '#lib/state/pouchdb/TodoState.svelte.ts';
 
 	interface IProps {
 		closeModal: () => void;

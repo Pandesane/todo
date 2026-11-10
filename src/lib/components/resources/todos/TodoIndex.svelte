@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { PouchTodoAPISingleton } from '$lib/api/api_pouch_db/PouchTodo.js';
-	import TodoPouchDBStateSingleton from '$lib/state/pouchdb/TodoState.svelte';
+	import { PouchTodoAPISingleton } from '#lib/api/api_pouch_db/PouchTodo.js';
+	import TodoPouchDBStateSingleton from '#lib/state/pouchdb/TodoState.svelte';
 	import TodoComponent from './TodoComponent.svelte';
 	import TodoNewForm from './TodoNewForm.svelte';
 	let dialogElementAdd: HTMLDialogElement;

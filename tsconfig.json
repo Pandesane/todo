@@ -1,6 +1,7 @@
 {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   "compilerOptions": {
     "allowUnreachableCode": false,
     "declaration": true,
@@ -29,6 +30,22 @@
 >>>>>>> 95b797e (Init of Todo Capacitor and pouchdb app)
 =======
   "extends": "./.svelte-kit/tsconfig.json",
+=======
+  "extends": "$app/tsconfig",
+
+  "exclude": [
+    "src/service-worker"
+  ],
+
+	"include": [
+    "src",
+    "*",
+    "test",
+    "vite.config.ts",
+     "prettier.config.js",
+     "eslint.config.js"],
+
+>>>>>>> a0ce78b (Corrected version that works well with both production and dev for pwa)
   "compilerOptions": {
     "allowJs": true,
     "checkJs": false,
@@ -37,12 +54,12 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "sourceMap": true,
-    "strict": true,
     "moduleResolution": "bundler",
+    "strict": true,
     "types": [
   "vite/client",
   "vite-plugin-pwa/info",
-  "vite-plugin-pwa/client"
+  "vite-plugin-pwa/client","$app/types", "node"
 ],
     "allowSyntheticDefaultImports": true
   }

@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { IPouchTodo } from '$lib/api/api_pouch_db/PouchTodo';
-	import TodoAudioAttachmentPreview from '$lib/components/TodoAudioAttachmentPreview.svelte';
-	import TodoAudioRecorder from '$lib/components/TodoAudioRecorder.svelte';
-	import TodoPouchDBStateSingleton from '$lib/state/pouchdb/TodoState.svelte';
-	import { PouchDBAttachments } from '$lib/utilities/pouchdb/PouchAttachment.svelte';
+	import type { IPouchTodo } from '#lib/api/api_pouch_db/PouchTodo';
+	import TodoAudioAttachmentPreview from '#lib/components/TodoAudioAttachmentPreview.svelte';
+	import TodoAudioRecorder from '#lib/components/TodoAudioRecorder.svelte';
+	import TodoPouchDBStateSingleton from '#lib/state/pouchdb/TodoState.svelte';
+	import { PouchDBAttachments } from '#lib/utilities/pouchdb/PouchAttachment.svelte';
 	// import type ITodo from '#lib/interfaces/ITodo.ts';
 
 	interface IProps {

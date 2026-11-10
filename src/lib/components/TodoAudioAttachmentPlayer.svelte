@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { IPouchDBAttachment } from '$lib/api/api_pouch_db/PouchTodo';
+	import type { IPouchDBAttachment } from '#lib/api/api_pouch_db/PouchTodo';
 	import { onMount } from 'svelte';
 	import { base64ToBlob } from 'blob-utils';
 

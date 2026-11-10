@@ -1,4 +1,4 @@
-import { PouchTodoAPISingleton, type IPouchTodo } from "$lib/api/api_pouch_db/PouchTodo"
+import { PouchTodoAPISingleton, type IPouchTodo } from "#lib/api/api_pouch_db/PouchTodo"
 
 class TodoPouchDBState {
   todos: IPouchTodo[] = $state([])

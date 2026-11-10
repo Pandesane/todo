@@ -1,7 +1,7 @@
 import PouchDB from "pouchdb-browser"
 import { COUCHDB_BASE_URL } from "../APIConstants"
-import { browser } from "$app/environment"
-import type { PouchAttachment } from "$lib/utilities/pouchdb/PouchAttachment.svelte"
+import { browser } from "$app/env"
+import type { PouchAttachment } from "#lib/utilities/pouchdb/PouchAttachment.svelte"
 import { LocalNotificationPlugin } from "local-notifications"
 // const module = await import(
 //   'local-notifications'

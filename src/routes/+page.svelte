@@ -1,6 +1,6 @@
 <script>
-	import AppBar from '$lib/components/AppBar.svelte';
-	import TodoIndex from '$lib/components/resources/todos/TodoIndex.svelte';
+	import AppBar from '#lib/components/AppBar.svelte';
+	import TodoIndex from '#lib/components/resources/todos/TodoIndex.svelte';
 	import {LocalNotificationPlugin} from "local-notifications"
 // const module = await import(
 //   '@local-notifications'
