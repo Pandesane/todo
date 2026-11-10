@@ -9,6 +9,6 @@ export class LocalNotificationPluginWeb extends WebPlugin implements ILocalNotif
   }
 
   async notify(options: {title: string, body: string}) {
-     console.log("To display notification in web: ", options)
+     console.log("To display notification in web g: ", options)
   }
 }
