@@ -6,14 +6,14 @@ import { withPwa } from '@vite-pwa/sveltekit';
 import path from 'node:path';
 
 export default defineConfig({
-	 resolve: {
-    alias: {
-      '@local-notifications': path.resolve(
-        __dirname,
-        '../capacitor_plugins/local_notifications/dist/esm'
-      )
-    }
-  },
+	//  resolve: {
+  //   alias: {
+  //     '@local-notifications': path.resolve(
+  //       __dirname,
+  //       '../capacitor_plugins/local_notifications/dist/esm'
+  //     )
+  //   }
+  // },
 	plugins: [
 		commonjs(),
 		tailwindcss(),
