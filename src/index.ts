@@ -1,8 +1,8 @@
 import { registerPlugin } from '@capacitor/core';
 
-import type { LocalNotificationPluginPlugin } from './definitions';
+import type { ILocalNotificationPlugin } from './definitions';
 
-const LocalNotificationPlugin = registerPlugin<LocalNotificationPluginPlugin>('LocalNotificationPlugin', {
+const LocalNotificationPlugin = registerPlugin<ILocalNotificationPlugin>('LocalNotificationPlugin', {
   web: () => import('./web').then((m) => new m.LocalNotificationPluginWeb()),
 });
 
