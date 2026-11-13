@@ -31,7 +31,7 @@ export default defineConfig({
 				}),
 				experimental: { remoteFunctions: true },
 				output: {
-					bundleStrategy: "single",
+					bundleStrategy: "inline",
 
 				},
 			},
