@@ -1,5 +1,6 @@
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
   "compilerOptions": {
     "allowUnreachableCode": false,
     "declaration": true,
@@ -26,4 +27,25 @@
 	},
 	"include": ["src", "vite.config.ts", "prettier.config.js", "eslint.config.js"]
 >>>>>>> 95b797e (Init of Todo Capacitor and pouchdb app)
+=======
+  "extends": "./.svelte-kit/tsconfig.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": false,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true
+  }
+
+  // Path aliases are handled by https://svelte.dev/docs/kit/configuration#alias
+  // except $lib which is handled by https://svelte.dev/docs/kit/configuration#files
+  //
+  // To make changes to top-level options such as include and exclude, we recommend extending
+  // the generated config; see https://svelte.dev/docs/kit/configuration#typescript
+>>>>>>> af2476a (Made first project for the with working pouch db and deployed to android with capacitor)
 }

@@ -1,27 +1,47 @@
 import tailwindcss from '@tailwindcss/vite';
-import adapter from '@sveltejs/adapter-static';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
+import commonjs from "vite-plugin-commonjs";
 
 export default defineConfig({
 	plugins: [
+		commonjs(),
 		tailwindcss(),
-		sveltekit({
-			compilerOptions: {
-				// Force runes mode for the project, except for libraries. Can be removed in svelte 6.
-				runes: ({ filename }) =>
-					filename.split(/[/\\]/).includes('node_modules') ? undefined : true,
-				experimental: { async: true }
+		sveltekit()
+	],
+
+	define: {
+		// Maps Node's global object to window for browser compatibility
+		global: 'window',
+	},
+
+	optimizeDeps: {
+		include: [
+			'pouchdb-browser',
+			'spark-md5',
+			'pouchdb-utils'
+		],
+		force: true,
+		esbuildOptions: {
+			define: {
+				global: 'window',
 			},
+		},
+	},
 
-			adapter: adapter({
+	build: {
+		commonjsOptions: {
+			include: [
+				/node_modules/
+			],
+			transformMixedEsModules: true,
+			defaultIsModuleExports: true
+		}
+	},
 
-			}),
-			experimental: { remoteFunctions: true },
-			output: {
-      bundleStrategy: "single",
-			
-    },
-		})
-	]
+	server: {
+		headers: {
+			'Cache-Control': 'no-store'
+		}
+	}
 });

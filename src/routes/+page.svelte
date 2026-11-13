@@ -1,15 +1,10 @@
 <script>
-	import TodoIndex from '#lib/components/resources/todos/TodoIndex.svelte';
-	import { App, Page, Navbar, Block } from 'konsta/svelte';
+	import AppBar from '$lib/components/AppBar.svelte';
+	import TodoIndex from '$lib/components/resources/todos/TodoIndex.svelte';
 </script>
 
-<App theme="ios">
-	<Page>
-		<Navbar title="My App"  />
-		<Block>
-			<p>Here comes my app</p>
-		</Block>
 
-    <TodoIndex relation_id={23} />
-	</Page>
-</App>
+
+<AppBar />
+
+<TodoIndex />

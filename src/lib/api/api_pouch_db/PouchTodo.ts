@@ -1,4 +1,8 @@
-import { browser } from '$app/env';
+import PouchDB from "pouchdb-browser"
+import { COUCHDB_BASE_URL } from "../APIConstants"
+import { browser } from "$app/environment"
+
+const DB_NAME = "todos"
 
 export interface IPouchTodo {
   _id: string
@@ -14,116 +18,188 @@ export interface IPouchTodo {
 
 }
 
-
-const DB_NAME = 'todos';
-
-export type PouchDbOnChangeHandler = (
-  deleted: boolean,
-  _docID: string,
-  doc: IPouchTodo | undefined
-) => void;
+export type PouchDbOnChangeHandler = (deleted: boolean, _docID: string, doc: IPouchTodo | undefined) => void
 
 class PouchTodoApi {
-  private db: any = undefined;
+  db
+  onChangeEventHandlers: PouchDbOnChangeHandler[] = []
 
-  private onChangeEventHandlers: PouchDbOnChangeHandler[] = [];
+  constructor() {
+    // let remoteDB = COUCHDB_BASE_URL + DB_NAME
+    if (browser) {
+      this.db = new PouchDB<IPouchTodo>(DB_NAME);
+      // this.db.sync(remoteDB, { live: true })
+      this.db.changes({
+        since: 'now',
+        live: true,
+        include_docs: true
+      }).on('change', (change) => {
+        // handle change
+        // if (change.doc?.collection == "todos") {
+        this.onChangeEventHandlers.forEach((handler) => {
+          if (change.deleted) {
+            handler(change.deleted, change.id, undefined)
 
-  private constructor() { }
+          } else {
+            handler(false, change.id, change.doc!)
+          }
+        })
+        // }
+        this.db?.compact()
 
-  static async create(): Promise<PouchTodoApi> {
-    const instance = new PouchTodoApi();
 
-    if (!browser) {
-      throw new Error('PouchDB can only be initialized in the browser');
-    }
+        console.log("New db change event: ", change)
+      }).on('complete', function (info) {
+        // changes() was canceled
+        console.log("New db complete event: ", info)
 
-    await instance.initialize();
-
-    return instance;
-  }
-
-  private async initialize() {
-    const module = await import('pouchdb-browser');
-
-    const PouchDB = module.default;
-
-    this.db = new PouchDB(DB_NAME);
-
-    this.db.changes({
-      since: 'now',
-      live: true,
-      include_docs: true
-    }).on('change', (change: any) => {
-
-      this.onChangeEventHandlers.forEach((handler) => {
-        if (change.deleted) {
-          handler(true, change.id, undefined);
-        } else {
-          handler(false, change.id, change.doc);
-        }
+      }).on('error', function (err) {
+        console.log(err);
       });
-
-      console.log('New database change:', change);
-    }).on('error', (error: Error) => {
-      console.error('PouchDB changes error:', error);
-    });
+    }
   }
 
   async addOnChangeHandler(handler: PouchDbOnChangeHandler) {
-    this.onChangeEventHandlers.push(handler);
+    this.onChangeEventHandlers.push(handler)
   }
+  async list() {
+    let doc = await
+      this.db?.allDocs({ include_docs: true });
+    let data: IPouchTodo[] = [];
+    for (let i = 0; i < doc!.rows.length; i++) {
+      const element = doc?.rows[i];
+      data.push(element?.doc!)
 
-  async list(): Promise<IPouchTodo[]> {
-    if (!this.db) {
-      throw new Error('PouchDB has not been initialized');
     }
+    console.log(data)
 
-    const result = await this.db.allDocs({
-      include_docs: true
-    });
-
-    return result.rows
-      .filter((row: any) => !row.value.deleted)
-      .map((row: any) => row.doc as IPouchTodo);
+    return data
   }
 
-  async get(docID: string) {
-    return await this.db.get(docID);
+  async get(_docID: string) {
+    return await this.db?.get(_docID)
   }
 
-  async create(event: SubmitEvent) {
-    event.preventDefault();
+  // async create(event: any, newChatMessageAttachments: ChatMessageAttachments) {
+  //   // Defaults to random _id
+  //   let data = this.getFormData(event)
+  //   const now = new Date().toISOString();
 
-    const form = event.currentTarget as HTMLFormElement;
-    const formData = new FormData(form);
+  //   const timeStamps: any = {
+  //     created_at: now,
+  //     updated_at: now,
+  //   };
 
-    const data = Object.fromEntries(formData.entries());
+  //   if (newChatMessageAttachments.attachments.length != 0) {
+  //     let response = await this.db.post({ ...data, ...timeStamps })
+  //     for (let i = 0; i < newChatMessageAttachments.attachments.length; i++) {
+  //       const attachment = newChatMessageAttachments.attachments[i];
+  //       let buffer = await attachment.file.arrayBuffer()
+  //       let blob = new Blob([buffer], { type: attachment.mime_type })
+  //       response = await this.db.putAttachment(response.id, attachment.file.name, response.rev, blob, attachment.mime_type)
+  //     }
+  //   } else {
+  //     let response = await this.db.post({ ...data, ...timeStamps })
 
+  //   }
+  // }
+
+
+  async create(
+    event: any,
+  ) {
+    const data = this.getFormData(event);
     const now = new Date().toISOString();
 
-    const document = {
-      ...data,
+    const timeStamps = {
       created_at: now,
-      updated_at: now
+      updated_at: now,
     };
 
-    console.log(document)
-    // return await this.db.post(document);
+    // const attachments = newChatMessageAttachments.attachments;
+
+    // Create the message document with all attachments at once
+    const document: any = {
+      ...data,
+      ...timeStamps,
+    };
+
+    // if (attachments.length > 0) {
+    //   document._attachments = {};
+
+    //   for (const attachment of attachments) {
+    //     let blob
+
+    //     if (!attachment.isBlob) {
+    //       blob = new Blob(
+    //         [await attachment.file!.arrayBuffer()],
+    //         { type: attachment.mime_type }
+    //       );
+    //     } else {
+    //       blob = attachment.blob
+    //     }
+
+    //     console.log("Added the blob here", blob)
+
+
+    //     document._attachments[attachment.uuid] = {
+    //       content_type: attachment.mime_type,
+    //       data: blob,
+    //     };
+    //   }
+    // }
+
+
+    // One database write for the document and its attachments
+    const response = await this.db?.post(document);
+    console.log(document, response)
+
+    return response;
   }
 
-  async delete(docID: string, rev: string) {
-    return await this.db.remove(docID, rev);
+
+
+  // Include the document _id and the _rev
+  update(event: any, todo: IPouchTodo) {
+    let data = this.getFormData(event)
+
+    const now = new Date().toISOString();
+    let document = { ...todo, ...data, updated_at: now }
+    console.log(data,)
+    console.log(todo)
+    console.log(document)
+    this.db?.put(document)
+  }
+
+  delete(_docID: string, _rev: string) {
+    this.db?.remove(_docID, _rev)
+  }
+
+  private getFormData(event: any) {
+    // 1. Prevent the browser from reloading the page
+    event.preventDefault();
+    // 2. Safely grab the form element
+    const form = event.currentTarget as HTMLFormElement;
+    // 3. Extract the form data using the native browser constructor
+    const formData = new FormData(form);
+    // 4. Convert the FormData iterator into a standard object map
+    const data = Object.fromEntries(formData.entries());
+    return data
+
   }
 }
 
-export default class PouchTodoAPISingleton {
-  private static PouchTodoAPI: PouchTodoApi | undefined;
 
-  static async getPouchTodoAPI(): Promise<PouchTodoApi> {
-    if (!this.PouchTodoAPI) {
-      this.PouchTodoAPI = await PouchTodoApi.create();
+
+export class PouchTodoAPISingleton {
+  private static PouchTodoAPI: PouchTodoApi | undefined = undefined
+
+  static getPouchTodoAPI() {
+    if (PouchTodoAPISingleton.PouchTodoAPI) {
+      return PouchTodoAPISingleton.PouchTodoAPI
     }
+    PouchTodoAPISingleton.PouchTodoAPI = new PouchTodoApi()
+    return PouchTodoAPISingleton.PouchTodoAPI
 
-    return this.PouchTodoAPI;
   }
 }

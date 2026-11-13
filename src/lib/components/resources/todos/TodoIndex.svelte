@@ -1,26 +1,23 @@
 <script lang="ts">
-	// import PouchTodoAPI from '#lib/api/api_pouch_db/PouchTodo.ts';
+	import { PouchTodoAPISingleton } from '$lib/api/api_pouch_db/PouchTodo.js';
+	import TodoPouchDBStateSingleton from '$lib/state/pouchdb/TodoState.svelte';
 	import TodoComponent from './TodoComponent.svelte';
 	import TodoNewForm from './TodoNewForm.svelte';
 	let dialogElementAdd: HTMLDialogElement;
 
-	let { relation_id }: { relation_id: string | number } = $props();
 	let todoNewForm: TodoNewForm;
 
-	// let todos = $derived(await PouchTodoAPI.list());
-	let todos = $derived([]);
+	let todoPouchDBState = TodoPouchDBStateSingleton.getSupportCenterLiveDataPouchDb();
 </script>
 
-<div class="mx-2 mt-4">
-	<div class="mb-5 flex items-start justify-between border-b border-slate-100 pb-3">
-		<!-- TITLE BLOCK -->
+<div class="mx-2 mt-16">
+	<!-- <div class="mb-5 flex items-start justify-between border-b border-slate-100 pb-3">
 		<div class="flex flex-col gap-1">
 			<p class="text-sm font-semibold tracking-tight text-slate-900">Todos</p>
 
 			<p class="text-xs leading-snug text-slate-400">Support text here</p>
 		</div>
 
-		<!-- ACTION -->
 		<button
 			onclick={() => {
 				dialogElementAdd.showModal();
@@ -31,13 +28,26 @@
 			<span class="icon-[hugeicons--add-01] size-4"></span>
 			Add
 		</button>
-	</div>
+	</div> -->
 
 	<div class="mt-4 w-full">
-		{#each todos as todo}
-			<TodoComponent {relation_id} {todo} />
+		{#each todoPouchDBState.todos as todo}
+			<TodoComponent {todo} />
 		{/each}
 	</div>
+</div>
+
+<div class="fixed rounded-full bg-red-200 w-20 h-20 bottom-2 right-2">
+	<button
+		aria-label="Add Todo"
+		onclick={() => {
+			dialogElementAdd.showModal();
+			todoNewForm.resetForm();
+		}}
+		class="flex items-center justify-center w-full h-full"
+	>
+		<span class="icon-[hugeicons--add-01] size-6"></span>
+	</button>
 </div>
 
 <!-- Add New  Todo -->
@@ -48,7 +58,6 @@
 			closeModal={() => {
 				dialogElementAdd.close();
 			}}
-			{relation_id}
 		/>
 
 		<div class="modal-action">
